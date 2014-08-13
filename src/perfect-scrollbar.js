@@ -123,6 +123,12 @@
 
         var scrollTop = parseInt(scrollbarYTop * (contentHeight - containerHeight) / (containerHeight - scrollbarYHeight), 10);
         $this.scrollTop(scrollTop);
+
+        if (isScrollbarXUsingBottom) {
+          $scrollbarXRail.css({bottom: scrollbarXBottom - scrollTop});
+        } else {
+          $scrollbarXRail.css({top: scrollbarXTop + scrollTop});
+        }
       };
 
       var updateContentScrollLeft = function (currentLeft, deltaX) {
@@ -141,6 +147,12 @@
 
         var scrollLeft = parseInt(scrollbarXLeft * (contentWidth - containerWidth) / (containerWidth - scrollbarXWidth), 10);
         $this.scrollLeft(scrollLeft);
+
+        if (isScrollbarYUsingRight) {
+          $scrollbarYRail.css({right: scrollbarYRight - scrollLeft});
+        } else {
+          $scrollbarYRail.css({left: scrollbarYLeft + scrollLeft});
+        }
       };
 
       var getSettingsAdjustedThumbSize = function (thumbSize) {
@@ -255,7 +267,6 @@
         $(document).bind('mousemove' + eventClassName, function (e) {
           if ($scrollbarXRail.hasClass('in-scrolling')) {
             updateContentScrollLeft(currentLeft, e.pageX - currentPageX);
-            updateBarSizeAndPosition();
             e.stopPropagation();
             e.preventDefault();
           }
@@ -286,7 +297,6 @@
         $(document).bind('mousemove' + eventClassName, function (e) {
           if ($scrollbarYRail.hasClass('in-scrolling')) {
             updateContentScrollTop(currentTop, e.pageY - currentPageY);
-            updateBarSizeAndPosition();
             e.stopPropagation();
             e.preventDefault();
           }
